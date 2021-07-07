@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "188845148298",
+    "project_id": "prmproject-a8b02",
+    "storage_bucket": "prmproject-a8b02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188845148298:android:472f4e038aad2096d90573",
+        "android_client_info": {
+          "package_name": "fpt.edu.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188845148298-spu87hejttgsb319ogsljnq04n0u8h4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLuHw-Z5S4MdoFn5rzpUhpbGhiKkOUo-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188845148298-spu87hejttgsb319ogsljnq04n0u8h4f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188845148298:android:ededabe6ab5540b8d90573",
+        "android_client_info": {
+          "package_name": "fpt.edu.prmproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188845148298-spu87hejttgsb319ogsljnq04n0u8h4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLuHw-Z5S4MdoFn5rzpUhpbGhiKkOUo-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188845148298-spu87hejttgsb319ogsljnq04n0u8h4f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
