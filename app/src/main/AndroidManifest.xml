@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.smallacademy.authenticatorapp">
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,8 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="activity.EditProfile"></activity>
-        <activity android:name="activity.Login" />
-        <activity android:name="activity.Register">
+        <activity android:name="activity.Register" />
+        <activity android:name="activity.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
