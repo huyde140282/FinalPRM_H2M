@@ -31,6 +31,7 @@ import net.smallacademy.authenticatorapp.R;
 import java.util.HashMap;
 import java.util.Map;
 
+import fragment.ProfileFragment;
 
 
 public class EditProfile extends AppCompatActivity {
@@ -48,12 +49,11 @@ public class EditProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-
         Intent data = getIntent();
         final String fullName = data.getStringExtra("fullName");
         String email = data.getStringExtra("email");
         String phone = data.getStringExtra("phone");
-        
+
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         user = fAuth.getCurrentUser();
@@ -72,7 +72,7 @@ public class EditProfile extends AppCompatActivity {
                 Picasso.get().load(uri).into(profileImageView);
             }
         });
-        
+
         profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +80,7 @@ public class EditProfile extends AppCompatActivity {
                 startActivityForResult(openGalleryIntent,1000);
             }
         });
-        
+
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,7 +102,7 @@ public class EditProfile extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(EditProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                startActivity(new Intent(getApplicationContext(), ProfileFragment.class));
                                 finish();
                             }
                         });
@@ -126,9 +126,8 @@ public class EditProfile extends AppCompatActivity {
         Log.d(TAG, "onCreate: " + fullName + " " + email + " " + phone);
     }
 
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1000){
             if(resultCode == Activity.RESULT_OK){

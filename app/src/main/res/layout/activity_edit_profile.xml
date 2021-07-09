@@ -44,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/userprofile" />
+        app:srcCompat="@drawable/user_profile" />
 
     <EditText
         android:id="@+id/profileEmailAddress"
