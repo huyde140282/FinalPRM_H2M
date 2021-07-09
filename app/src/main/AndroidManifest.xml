@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name="activity.EditProfile"></activity>
         <activity android:name="activity.Register" />
+        <activity android:name="activity.HomeActivity"/>
         <activity android:name="activity.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="activity.MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -1,15 +1,18 @@
-package activity;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+package fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,7 +36,11 @@ import net.smallacademy.authenticatorapp.R;
 
 import javax.annotation.Nullable;
 
-public class MainActivity extends AppCompatActivity {
+import activity.EditProfile;
+import activity.Login;
+
+public class ProfileFragment extends Fragment {
+
     private static final int GALLERY_INTENT_CODE = 1023 ;
     TextView fullName,email,phone,verifyMsg;
     FirebaseAuth fAuth;
@@ -44,19 +51,31 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser user;
     ImageView profileImage;
     StorageReference storageReference;
+    private  View mView;
+
+    public ProfileFragment() {
+        // Required empty public constructor
+    }
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        phone = findViewById(R.id.profilePhone);
-        fullName = findViewById(R.id.profileName);
-        email    = findViewById(R.id.profileEmail);
-        resetPassLocal = findViewById(R.id.resetPasswordLocal);
+    }
 
-        profileImage = findViewById(R.id.profileImage);
-        changeProfileImage = findViewById(R.id.changeProfile);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        mView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        phone = mView.findViewById(R.id.profilePhone);
+        fullName = mView.findViewById(R.id.profileName);
+        email    = mView.findViewById(R.id.profileEmail);
+        resetPassLocal = mView.findViewById(R.id.resetPasswordLocal);
+
+        profileImage = mView.findViewById(R.id.profileImage);
+        changeProfileImage = mView.findViewById(R.id.changeProfile);
 
 
         fAuth = FirebaseAuth.getInstance();
@@ -71,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        resendCode = findViewById(R.id.resendCode);
-        verifyMsg = findViewById(R.id.verifyMsg);
+        resendCode = mView.findViewById(R.id.resendCode);
+        verifyMsg = mView.findViewById(R.id.verifyMsg);
 
 
         userId = fAuth.getCurrentUser().getUid();
-         user = fAuth.getCurrentUser();
+        user = fAuth.getCurrentUser();
 
         if(!user.isEmailVerified()){
             verifyMsg.setVisibility(View.VISIBLE);
@@ -105,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+        documentReference.addSnapshotListener(getActivity().getMainExecutor(), new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if(documentSnapshot.exists()){
@@ -139,12 +158,12 @@ public class MainActivity extends AppCompatActivity {
                         user.updatePassword(newPassword).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(MainActivity.this, "Password Reset Successfully.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mView.getContext(), "Password Reset Successfully.", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(MainActivity.this, "Password Reset Failed.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mView.getContext(), "Password Reset Failed.", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -153,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                       // close
+                        // close
                     }
                 });
 
@@ -172,21 +191,15 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtra("phone",phone.getText().toString());
                 startActivity(i);
 //
-
             }
         });
 
-
+        return mView;
     }
-
-
-
 
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();//logout
-        startActivity(new Intent(getApplicationContext(),Login.class));
-        finish();
+        startActivity(new Intent(getActivity().getApplicationContext(), Login.class));
+        getActivity().finish();
     }
-
-
 }
