@@ -3,6 +3,7 @@ package model;
 public class Food {
     private int resId;
     private String foodName, description, ingredients;
+    private String imagePath;
 
     public Food(int resId, String foodName) {
         this.resId = resId;
@@ -46,5 +47,12 @@ public class Food {
 
     public void setFoodName(String foodName) {
         this.foodName = foodName;
+    }
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import net.smallacademy.authenticatorapp.R;
 
+import static android.content.ContentValues.TAG;
+
 
 public class Login extends AppCompatActivity {
     EditText mEmail,mPassword;
@@ -31,7 +34,6 @@ public class Login extends AppCompatActivity {
     TextView mCreateBtn,forgotTextLink;
     ProgressBar progressBar;
     FirebaseAuth fAuth;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +81,7 @@ public class Login extends AppCompatActivity {
                         if(task.isSuccessful()){
                             Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                            finish();
+
                         }else {
                             Toast.makeText(Login.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
@@ -142,4 +144,13 @@ public class Login extends AppCompatActivity {
 
 
     }
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+////        if(fAuth.getCurrentUser()!=null)
+////        {
+////            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+////        }
+//    }
 }

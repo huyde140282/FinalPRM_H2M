@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif"
-        android:text="Please sign in below to get started"
+        android:text="Please sign in below to get statred"
         android:textColor="#F3CBD0"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-
         android:background="#F3CBD0"
         android:ems="10"
         android:fontFamily="@font/poppins_light"
@@ -49,7 +48,7 @@
         android:padding="10dp"
         android:singleLine="false"
         android:textColor="#000000"
-        android:textColorHint="#52000000"
+        android:textColorHint="#000000"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,8 +70,8 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:padding="10dp"
-        android:textColor="#000000"
-        android:textColorHint="#52000000"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#000000"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,11 +97,12 @@
         android:id="@+id/createText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
+        android:layout_marginTop="148dp"
         android:fontFamily="@font/poppins_light"
         android:text="Dont' have account ? Register here"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
 
@@ -116,7 +116,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createText"
-        app:layout_constraintVertical_bias="0.455" />
+        app:layout_constraintVertical_bias="0.39" />
 
     <TextView
         android:id="@+id/forgotPassword"
@@ -138,7 +138,7 @@
         android:layout_width="91dp"
         android:layout_height="91dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/logofinal"
+        android:src="@drawable/logo2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

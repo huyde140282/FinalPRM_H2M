@@ -1,12 +1,16 @@
 package fragment;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -37,7 +41,10 @@ import net.smallacademy.authenticatorapp.R;
 import javax.annotation.Nullable;
 
 import activity.EditProfile;
+import activity.HomeActivity;
 import activity.Login;
+
+import static android.content.ContentValues.TAG;
 
 public class ProfileFragment extends Fragment {
 
@@ -46,7 +53,7 @@ public class ProfileFragment extends Fragment {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userId;
-    Button resendCode;
+    Button resendCode,logout;
     Button resetPassLocal,changeProfileImage;
     FirebaseUser user;
     ImageView profileImage;
@@ -63,6 +70,7 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,6 +84,7 @@ public class ProfileFragment extends Fragment {
 
         profileImage = mView.findViewById(R.id.profileImage);
         changeProfileImage = mView.findViewById(R.id.changeProfile);
+        logout=mView.findViewById(R.id.logoutBtn);
 
 
         fAuth = FirebaseAuth.getInstance();
@@ -124,19 +133,40 @@ public class ProfileFragment extends Fragment {
 
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
-        documentReference.addSnapshotListener(getActivity().getMainExecutor(), new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if(documentSnapshot.exists()){
+
+        documentReference.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
                     phone.setText(documentSnapshot.getString("phone"));
                     fullName.setText(documentSnapshot.getString("fName"));
                     email.setText(documentSnapshot.getString("email"));
-
-                }else {
-                    Log.d("tag", "onEvent: Document do not exists");
-                }
-            }
-        });
+                        } else {
+                            Toast.makeText(getActivity(), "Document does not exist", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, e.toString());
+                    }
+                });
+//        documentReference.addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+//                if(documentSnapshot.exists()){
+//                    phone.setText(documentSnapshot.getString("phone"));
+//                    fullName.setText(documentSnapshot.getString("fName"));
+//                    email.setText(documentSnapshot.getString("email"));
+//
+//                }else {
+//                    Log.d("tag", "onEvent: Document do not exists");
+//                }
+//            }
+//        });
 
 
         resetPassLocal.setOnClickListener(new View.OnClickListener() {
@@ -193,13 +223,18 @@ public class ProfileFragment extends Fragment {
 //
             }
         });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                        FirebaseAuth.getInstance().signOut();//logout
+                        startActivity(new Intent(getActivity().getApplicationContext(), Login.class));
+                        getActivity().finish();
+            }
+        });
+
 
         return mView;
     }
 
-    public void logout(View view) {
-        FirebaseAuth.getInstance().signOut();//logout
-        startActivity(new Intent(getActivity().getApplicationContext(), Login.class));
-        getActivity().finish();
-    }
+
 }
