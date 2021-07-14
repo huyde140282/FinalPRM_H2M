@@ -2,25 +2,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragment.HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="fragment.HomeFragment"
+    android:padding="10dp">
 
     <LinearLayout
         android:id="@+id/slide_image"
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:orientation="vertical"
-        android:background="@color/colorPrimary">
+        android:background="@color/homeslide">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/home_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="220dp"/>
+            android:layout_height="200dp"/>
 
         <me.relex.circleindicator.CircleIndicator
             android:id="@+id/circle_indicator"
-            android:layout_width="wrap_content"
             android:layout_height="30dp"
-
+            android:layout_width="wrap_content"
+            app:ci_drawable="@drawable/indicator_bg"
+            android:layout_marginTop="-50dp"
             android:layout_gravity="center_horizontal"/>
     </LinearLayout>
 

@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#F6689C</color>
     <color name="bar_background">#D70F64</color>
+    <color name="homeslide">#FFFFFF</color>
+    <color name="btn_text">#FFFFFF</color>
 </resources>

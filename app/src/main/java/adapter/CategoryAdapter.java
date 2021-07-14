@@ -1,6 +1,7 @@
 package adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import net.smallacademy.authenticatorapp.R;
 
 import java.util.List;
 
+import activity.ItemDetail;
 import model.Category;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
@@ -48,9 +50,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
         holder.rcvFood.setLayoutManager(linearLayoutManager);
 
-        FoodAdapter foodAdapter = new FoodAdapter();
+        FoodAdapter foodAdapter = new FoodAdapter(context.getApplicationContext());
         foodAdapter.setData(category.getFoods());
         holder.rcvFood.setAdapter(foodAdapter);
+
     }
 
     @Override

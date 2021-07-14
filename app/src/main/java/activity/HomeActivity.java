@@ -16,6 +16,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import net.smallacademy.authenticatorapp.R;
 
 import adapter.HomeViewPagerAdapter;
+import fragment.CameraFragment;
+import fragment.HomeFragment;
+import fragment.MyRecipeFragment;
+import fragment.ProfileFragment;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -63,10 +67,20 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
-                    case R.id.home_tab: mViewPager.setCurrentItem(0); break;
-                    case R.id.my_recipe_tab: mViewPager.setCurrentItem(1); break;
-                    case R.id.camera_tab: mViewPager.setCurrentItem(2); break;
-                    case R.id.profile_tab: mViewPager.setCurrentItem(3); break;
+                    case R.id.home_tab: mViewPager.setCurrentItem(0);
+                                        HomeFragment homeFragment = (HomeFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
+                                        homeFragment.reloadData();
+                                        break;
+                    case R.id.my_recipe_tab: mViewPager.setCurrentItem(1);
+                                             MyRecipeFragment myRecipeFragment = (MyRecipeFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 1);
+                                             myRecipeFragment.reloadData();
+                                             break;
+                    case R.id.camera_tab: mViewPager.setCurrentItem(2);
+                                          CameraFragment cameraFragment = (CameraFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 2);
+                                          break;
+                    case R.id.profile_tab: mViewPager.setCurrentItem(3);
+                                           ProfileFragment profileFragment = (ProfileFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 3);
+                                           break;
                 }
                 return false;
             }

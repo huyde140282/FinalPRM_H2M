@@ -2,19 +2,33 @@ package model;
 
 public class Food {
     private int resId;
-    private String foodName, description, ingredients;
-    private String imagePath;
+    private String foodName, description, ingredients, imagePath;
+    private int calories, carb, fat;
 
     public Food(int resId, String foodName) {
         this.resId = resId;
         this.foodName = foodName;
     }
 
-    public Food(int resId, String foodName, String description, String ingredients) {
+    public Food(int resId, String foodName, String description, String ingredients, String imagePath, int calories, int carb, int fat) {
         this.resId = resId;
         this.foodName = foodName;
         this.description = description;
         this.ingredients = ingredients;
+        this.imagePath = imagePath;
+        this.calories = calories;
+        this.carb = carb;
+        this.fat = fat;
+    }
+
+    public Food(int resId, String foodName, String description, String ingredients, int calories, int carb, int fat) {
+        this.resId = resId;
+        this.foodName = foodName;
+        this.description = description;
+        this.ingredients = ingredients;
+        this.calories = calories;
+        this.carb = carb;
+        this.fat = fat;
     }
 
     public String getDescription() {
@@ -54,5 +68,29 @@ public class Food {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
+
+    public int getCarb() {
+        return carb;
+    }
+
+    public void setCarb(int carb) {
+        this.carb = carb;
+    }
+
+    public int getFat() {
+        return fat;
+    }
+
+    public void setFat(int fat) {
+        this.fat = fat;
     }
 }

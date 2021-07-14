@@ -1,5 +1,7 @@
 package adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +16,22 @@ import net.smallacademy.authenticatorapp.R;
 
 import java.util.List;
 
+import activity.ItemDetail;
 import model.Food;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHoler> {
 
     private List<Food> mFoods;
+    private Context context;
+
+    public FoodAdapter(Context context) {
+        this.context = context;
+    }
+
+    public FoodAdapter(List<Food> mFoods, Context context) {
+        this.mFoods = mFoods;
+        this.context = context;
+    }
 
     public void setData(List<Food> list){
         this.mFoods = list;
@@ -40,6 +53,23 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHoler>
         }
         holder.imgFood.setImageResource(food.getResId());
         holder.txtFood.setText(food.getFoodName());
+
+        holder.imgFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ItemDetail.class);
+                intent.putExtra("foodname", food.getFoodName());
+                intent.putExtra("description", food.getDescription());
+                intent.putExtra("ingredients", food.getIngredients());
+                intent.putExtra("calo", food.getCalories());
+                intent.putExtra("carb", food.getCarb());
+                intent.putExtra("fat", food.getFat());
+                intent.putExtra("img", food.getResId());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
