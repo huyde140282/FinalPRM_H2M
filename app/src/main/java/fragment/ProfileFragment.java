@@ -59,6 +59,7 @@ public class ProfileFragment extends Fragment {
     ImageView profileImage;
     StorageReference storageReference;
     private  View mView;
+    Button button1;
 
     public ProfileFragment() {
         // Required empty public constructor
