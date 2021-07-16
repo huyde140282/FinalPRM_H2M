@@ -17,12 +17,14 @@
             android:layout_height="150dp"
             android:scaleType="centerCrop"
             android:src="@drawable/img1"/>
+
         <TextView
             android:id="@+id/txt_foodname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:fontFamily="@font/poppins"
             android:padding="6dp"
-            android:text="Cheese-Quesadillas"/>
+            android:text="Cheese-Quesadillas"
+            android:textSize="16sp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

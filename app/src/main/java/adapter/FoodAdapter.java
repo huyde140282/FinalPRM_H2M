@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import net.smallacademy.authenticatorapp.R;
 
 
@@ -46,12 +48,18 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHoler>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FoodAdapter.FoodViewHoler holder, int position) {
+    public void onBindViewHolder(@NonNull FoodViewHoler holder, int position) {
         Food food = mFoods.get(position);
         if(food == null){
             return;
         }
-        holder.imgFood.setImageResource(food.getResId());
+        String data=food.getImagePath();
+
+        Picasso.get()
+                .load(data)
+                .fit()
+                .centerCrop()
+                .into(holder.imgFood);
         holder.txtFood.setText(food.getFoodName());
 
         holder.imgFood.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +72,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHoler>
                 intent.putExtra("calo", food.getCalories());
                 intent.putExtra("carb", food.getCarb());
                 intent.putExtra("fat", food.getFat());
-                intent.putExtra("img", food.getResId());
+                intent.putExtra("img", food.getImagePath());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }

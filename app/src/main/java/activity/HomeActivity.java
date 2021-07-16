@@ -11,6 +11,9 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import net.smallacademy.authenticatorapp.R;
@@ -26,6 +29,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private BottomNavigationView bottomNavigationView;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

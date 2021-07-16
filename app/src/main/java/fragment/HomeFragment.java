@@ -1,20 +1,39 @@
 package fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import net.smallacademy.authenticatorapp.R;
+
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +41,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import adapter.CategoryAdapter;
-
 import adapter.HomeSlidePhotoAdapter;
 import me.relex.circleindicator.CircleIndicator;
 import model.Category;
 import model.Food;
 import model.HomeSlidePhoto;
 
-public class HomeFragment extends Fragment {
+import static android.content.ContentValues.TAG;
 
+public class HomeFragment extends Fragment {
+    StorageReference storageReference;
     private RecyclerView rcvCategory;
     private CategoryAdapter categoryAdapter;
     private ViewPager viewPager;
@@ -39,7 +59,10 @@ public class HomeFragment extends Fragment {
     private List<HomeSlidePhoto> mlistSlidePhoto;
     private Timer timer;
     private View mView;
-
+    private FirebaseAuth fAuth;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference foodRef = db.collection("categories");
+    List<Category> categories;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -68,18 +91,24 @@ public class HomeFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mView.getContext(), RecyclerView.VERTICAL, false);
         rcvCategory.setLayoutManager(linearLayoutManager);
-
-        categoryAdapter.setData(getListCategory());
+//        View Category;
+        categories = new ArrayList<>();
+        categoryAdapter.setData(categories);
         rcvCategory.setAdapter(categoryAdapter);
+        EventChangeListener();
+        //Load Image
         autoSlideImage();
 
 
-        return  mView;
+        return mView;
     }
 
-    private List<Category> getListCategory(){
+    private void loadfoodtoDB() {
         List<Category> list = new ArrayList<>();
         List<Food> listFood = new ArrayList<>();
+
+
+
         listFood.add(new Food(R.drawable.img1, "Beef and Vegetables", "DirectionsInstructions Checklist\n" +
                 "Step 1\n" +
                 "Heat vegetable oil in a large wok or skillet over medium-high heat; cook and stir beef until browned, 3 to 4 minutes. Move beef to the side of the wok and add broccoli, bell pepper, carrots, green onion, and garlic to the center of the wok. Cook and stir vegetables for 2 minutes.\n" +
@@ -179,14 +208,57 @@ public class HomeFragment extends Fragment {
         listFood.add(new Food(R.drawable.img7, "Egg-Beef Mixture"));
         listFood.add(new Food(R.drawable.img8, "Fried Rice"));
         listFood.add(new Food(R.drawable.img9, "Touhu Sauce Rice"));
-
-        list.add(new Category("New meals", listFood.subList(0,4)));
-        list.add(new Category("Popular", listFood.subList(5,8)));
-        list.add(new Category("Recommend for you", listFood.subList(5,8)));
-        return list;
+        Category category1= new Category("New meals",listFood.subList(0,4));
+        Category category2=new Category("Polular",listFood.subList(5,8));
+        foodRef.add(category1);
+        foodRef.add(category2);
+//        list.add(new Category("New meals", listFood.subList(0,4)));
+//        list.add(new Category("Popular", listFood.subList(5,8)));
+//        list.add(new Category("Recommend for you", listFood.subList(5,8)));
     }
+    public List<Category> loadFood() {
 
-    private List<HomeSlidePhoto> getListHomePhoto(){
+
+        foodRef.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Category category = documentSnapshot.toObject(Category.class);
+                            String categoryName = category.getNameCategory();
+                            List<Food> foodList =category.getFoods();
+                            categories.add(new Category(categoryName,foodList));
+                        }
+                    }
+                });
+        return categories ;
+    }
+    private void EventChangeListener()
+    {
+
+        foodRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable  QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(error!=null)
+                {
+                 Log.e("FireStore error",error.getMessage());
+                 return;
+                }
+                for(DocumentChange dc :value.getDocumentChanges())
+                {
+                    if(dc.getType()==DocumentChange.Type.ADDED)
+                    {
+                        categories.add(dc.getDocument().toObject(Category.class));
+
+                    }
+                    categoryAdapter.notifyDataSetChanged();
+                }
+
+            }
+        });
+    }
+    private List<HomeSlidePhoto> getListHomePhoto() {
         List<HomeSlidePhoto> list = new ArrayList<>();
         list.add(new HomeSlidePhoto(R.drawable.homeslide3));
         list.add(new HomeSlidePhoto(R.drawable.homeslide2));
@@ -194,12 +266,12 @@ public class HomeFragment extends Fragment {
         return list;
     }
 
-    private void autoSlideImage(){
-        if(mlistSlidePhoto == null || mlistSlidePhoto.isEmpty() || viewPager == null){
+    private void autoSlideImage() {
+        if (mlistSlidePhoto == null || mlistSlidePhoto.isEmpty() || viewPager == null) {
             return;
         }
         //init timer
-        if(timer == null){
+        if (timer == null) {
             timer = new Timer();
         }
 
@@ -211,10 +283,10 @@ public class HomeFragment extends Fragment {
                     public void run() {
                         int currentItem = viewPager.getCurrentItem();
                         int totalItem = mlistSlidePhoto.size() - 1;
-                        if(currentItem < totalItem){
+                        if (currentItem < totalItem) {
                             currentItem++;
                             viewPager.setCurrentItem(currentItem);
-                        }else{
+                        } else {
                             viewPager.setCurrentItem(0);
                         }
                     }
@@ -227,7 +299,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(timer != null){
+        if (timer != null) {
             timer.cancel();
             timer = null;
         }
@@ -238,5 +310,6 @@ public class HomeFragment extends Fragment {
         super.onResume();
     }
 
-    public void reloadData(){}
+    public void reloadData() {
+    }
 }

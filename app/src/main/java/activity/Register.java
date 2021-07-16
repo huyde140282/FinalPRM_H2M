@@ -26,9 +26,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import net.smallacademy.authenticatorapp.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import model.Food;
 
 
 public class Register extends AppCompatActivity {
@@ -112,11 +115,13 @@ public class Register extends AppCompatActivity {
 
                             Toast.makeText(Register.this, "User Created.", Toast.LENGTH_SHORT).show();
                             userID = fAuth.getCurrentUser().getUid();
+                            List<Food> favoriteFood=new ArrayList<>();
                             DocumentReference documentReference = fStore.collection("users").document(userID);
                             Map<String,Object> user = new HashMap<>();
                             user.put("fName",fullName);
                             user.put("email",email);
                             user.put("phone",phone);
+                            user.put("favoriteFood",favoriteFood);
                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {

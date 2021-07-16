@@ -5,7 +5,8 @@ import java.util.List;
 public class Category {
     private String nameCategory;
     private List<Food> foods;
-
+    public Category ()
+    {}
     public Category(String nameCategory, List<Food> foods) {
         this.nameCategory = nameCategory;
         this.foods = foods;
