@@ -1,86 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content"
+    android:elevation="15dp"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:fitsSystemWindows="true">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:title="Food1"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-            android:id="@+id/collapsing_toolbar">
-
-            <ImageView
-                android:id="@+id/img_slide"
-                android:layout_width="match_parent"
-                android:layout_height="280dp"
-                android:src="@drawable/img1"
-                android:scaleType="centerCrop"/>
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"/>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:background="@drawable/custom_food_detail">
-
-        <RelativeLayout
-            android:id="@+id/fodd_information"
+     Background
+     <RelativeLayout
+            android:id="@+id/background_delete"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/food_recipt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/food_instruction"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/food_ingredient"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/food_recipt"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/ingredient_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-            </androidx.cardview.widget.CardView>
-
-            <Button
-                android:id="@+id/youtube_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/food_ingredient"
-                android:layout_marginTop="10dp"/>
-
+            <include layout="@layout/swipe_delete_my_recipe_background" />
         </RelativeLayout>
 
-    </androidx.core.widget.NestedScrollView>
+        <RelativeLayout
+            android:id="@+id/background_share"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include layout="@layout/swipe_share_my_recipe_background"/>
+        </RelativeLayout>
+    Foreground
+    <RelativeLayout
+        android:id="@+id/foreground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <LinearLayout
+
+            android:id="@+id/my_recipes_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7.5dp"
+            android:layout_marginTop="7.5dp"
+            android:layout_marginEnd="7.5dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/recipe_cardview_offline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="7.5dp"
+                android:layout_marginBottom="7.5dp"
+                card_view:cardCornerRadius="7.5dp">
+
+                <ImageView
+                    android:id="@+id/image_cardview_offline"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/grey_box_placeholder" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/text_cardview_offline"
+                android:layout_width="91dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="7.5dp"
+                android:fontFamily="@font/poppins"
+                android:text="Name Food"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</FrameLayout>

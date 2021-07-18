@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:background="@drawable/custom_food_detail">
+        android:background="@drawable/common_google_signin_btn_icon_dark">
 
         <RelativeLayout
             android:id="@+id/food_information"

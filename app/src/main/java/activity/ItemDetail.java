@@ -3,31 +3,29 @@ package activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import net.smallacademy.authenticatorapp.R;
 
-import java.util.EventListener;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import model.Category;
 import model.Food;
 
 public class ItemDetail extends AppCompatActivity {
@@ -42,6 +40,7 @@ public class ItemDetail extends AppCompatActivity {
     int calo1;
     int carb1;
     int fat1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +56,9 @@ public class ItemDetail extends AppCompatActivity {
         txtCarb = findViewById(R.id.Carb_infor);
         txtFat = findViewById(R.id.Fat_infor);
         imgView = findViewById(R.id.img_slide);
-        addFood =findViewById(R.id.add_btn);
+        addFood = findViewById(R.id.add_btn);
         //Set food image
         String imgFood = intent.getStringExtra("img");
-
 
 
         //Set food name
@@ -83,38 +81,52 @@ public class ItemDetail extends AppCompatActivity {
         txtCalo.setText(calo);
         txtCarb.setText(carb);
         txtFat.setText(fat);
-        if(!TextUtils.isEmpty(calo) && !TextUtils.isEmpty(carb) && !TextUtils.isEmpty(fat))
-        {
-             calo1 =Integer.parseInt(calo);
-             carb1 =Integer.parseInt(carb);
-             fat1 =Integer.parseInt(fat);
+        if (!TextUtils.isEmpty(calo) && !TextUtils.isEmpty(carb) && !TextUtils.isEmpty(fat)) {
+            calo1 = Integer.parseInt(calo);
+            carb1 = Integer.parseInt(carb);
+            fat1 = Integer.parseInt(fat);
+        } else {
+            calo1 = 1;
+            calo1 = 2;
+            fat1 = 3;
         }
-        else{
-            calo1=1;
-            calo1=2;
-            fat1=3;
-        }
-        Food favoriteFood= new Food(1,foodName,instruction,ingredient,imgFood,calo1,carb1,fat1);
+        Food favoriteFood = new Food(1, foodName, instruction, ingredient, imgFood, calo1, carb1, fat1);
+        List<Food> foods = new ArrayList<>();
+        foods.add(favoriteFood);
+        Category category = new Category("myRecipe", foods);
         addFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 userID = fAuth.getCurrentUser().getUid();
                 DocumentReference documentReference = fStore.collection("users").document(userID);
-                documentReference.update("favoriteFood",favoriteFood);
-
-//                documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        Log.d(TAG, "onSuccess: Add Sucess "+ userID);
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.d(TAG, "onFailure: " + e.toString());
-//                    }
-//                });
-                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-//                finish();;;
+                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                List<Map<String, Object>> foodFB = (List<Map<String, Object>>) document.get("foods");
+                                ArrayList<String> names = new ArrayList<>();
+                                for (Map<String, Object> group : foodFB) {
+//                            String name =  group.get("description").toString();
+                                    int calories = Integer.parseInt(group.get("calories").toString());
+                                    int carb = Integer.parseInt(group.get("carb").toString());
+                                    String des = group.get("description").toString();
+                                    int fat = Integer.parseInt(group.get("fat").toString());
+                                    String imagePath = (String) group.get("imagePath");
+                                    String ing = (String) group.get("ingredients");
+                                    int resId = Integer.parseInt(group.get("resId").toString());
+                                    String foodName = (String) group.get("foodName");
+                                    Food food = new Food(resId, foodName, des, ing, imagePath, calories, carb, fat);
+                                    foods.add(food);
+                                }
+                                foods.add(favoriteFood);
+                                documentReference.update("foods",foods);
+                            }
+                        }
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    }
+                });
             }
         });
     }
