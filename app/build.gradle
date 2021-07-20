@@ -49,4 +49,5 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation 'com.google.android.material:material:<version>'
     implementation 'org.jetbrains:annotations:16.0.2'
+    implementation 'com.scwang.wave:MultiWaveHeader:1.0.0-andx'
 }

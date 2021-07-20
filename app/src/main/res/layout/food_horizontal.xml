@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="10dp"
+    android:layout_width="240dp"
+    android:layout_height="200dp"
+    android:layout_marginEnd="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="2dp">
+    app:cardCornerRadius="10dp"
+    app:cardElevation="6dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/img_food_rep"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="120dp"
             android:scaleType="centerCrop"
+            android:layout_margin="5dp"
             android:src="@drawable/img1"/>
 
         <TextView
@@ -23,8 +27,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
-            android:padding="6dp"
+            android:paddingLeft="6dp"
             android:text="Cheese-Quesadillas"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textColor="#000000"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+<!--        <RatingBar-->
+<!--            android:id="@+id/rating_bar_control"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:numStars="5"-->
+<!--            android:rating="3.5"-->
+<!--            android:stepSize="1"-->
+<!--            style="@style/foodRatingBar"-->
+<!--            android:scaleX="0.3"-->
+<!--            android:scaleY="0.3"-->
+<!--            android:layout_marginTop="-20dp"-->
+<!--            android:layout_marginStart="-78dp"-->
+<!--            android:textAlignment="textStart"/>-->
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/calo_home"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="20"-->
+<!--                android:layout_marginLeft="-50dp"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:layout_toEndOf="@+id/rating_bar_control"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/carb_home"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="20"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:layout_toEndOf="@+id/calo_home"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/fat_home"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="20"-->
+<!--                android:layout_toEndOf="@+id/carb_home" />-->
+        </RelativeLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

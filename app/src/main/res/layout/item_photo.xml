@@ -6,9 +6,9 @@
     <ImageView
         android:id="@+id/img_slide"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="180dp"
         android:src="@drawable/homeslide3"
         android:scaleType="centerCrop"
-        android:alpha="0.6"/>
+        android:alpha="0.75"/>
 
 </LinearLayout>
