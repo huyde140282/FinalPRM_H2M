@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,10 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
     private List<Food> mFoods;
     private Context context;
 
+    public List<Food> getmFoods() {
+        return mFoods;
+    }
+
     public MyRecipeAdapter(Context context) {
         this.context = context;
     }
@@ -34,7 +39,7 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
         this.context = context;
     }
 
-    public void setData(List<Food> list){
+    public void setData(List<Food> list) {
         this.mFoods = list;
         notifyDataSetChanged();
     }
@@ -49,17 +54,17 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
     @Override
     public void onBindViewHolder(@NonNull MyRecipeAdapter.FoodViewHoler holder, int position) {
         Food food = mFoods.get(position);
-        if(food == null){
+        if (food == null) {
             return;
         }
-        String data=food.getImagePath();
+        String data = food.getImagePath();
 
         Picasso.get()
                 .load(data)
                 .fit()
                 .centerCrop()
                 .into(holder.imgFood);
-        holder.txtFood.setText(food.getFoodName()  +" Calo: "+food.getCalories()+" Fat: "+food.getFat()+" Carb:"+food.getCarb());
+        holder.txtFood.setText(food.getFoodName() + " Calo: " + food.getCalories() + " Fat: " + food.getFat() + " Carb:" + food.getCarb());
 
         holder.imgFood.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,21 +86,28 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
 
     @Override
     public int getItemCount() {
-        if(mFoods != null){
+        if (mFoods != null) {
             return mFoods.size();
         }
         return 0;
     }
 
-    public class FoodViewHoler extends RecyclerView.ViewHolder{
+    public class FoodViewHoler extends RecyclerView.ViewHolder {
         private ImageView imgFood;
         private TextView txtFood;
+        RelativeLayout layoutForeGround;
+        RelativeLayout deleteBackGround;
+        RelativeLayout rightBackGround;
+
 
         public FoodViewHoler(@NonNull View itemView) {
             super(itemView);
-
+            deleteBackGround = itemView.findViewById(R.id.swipe_delete_background);
+            rightBackGround = itemView.findViewById(R.id.swipe_share_background);
+            layoutForeGround = itemView.findViewById(R.id.foreground);
             imgFood = itemView.findViewById(R.id.image_cardview_offline);
             txtFood = itemView.findViewById(R.id.text_cardview_offline);
         }
     }
+
 }

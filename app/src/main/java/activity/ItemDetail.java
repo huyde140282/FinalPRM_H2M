@@ -1,6 +1,7 @@
 package activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,9 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.collection.LLRBNode;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import net.smallacademy.authenticatorapp.R;
 
@@ -59,11 +63,16 @@ public class ItemDetail extends AppCompatActivity {
         addFood = findViewById(R.id.add_btn);
         //Set food image
         String imgFood = intent.getStringExtra("img");
-
+        Picasso.get()
+                .load(imgFood)
+                .fit()
+                .centerCrop()
+                .into(imgView);
 
         //Set food name
         String foodName = intent.getStringExtra("foodname");
         collapsingToolbarLayout.setTitle(foodName);
+        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.Widget_AppCompat_Light_ActionBar_Solid);
 
         //Set food instruction
         String instruction = intent.getStringExtra("description");
@@ -93,7 +102,6 @@ public class ItemDetail extends AppCompatActivity {
         Food favoriteFood = new Food(1, foodName, instruction, ingredient, imgFood, calo1, carb1, fat1);
         List<Food> foods = new ArrayList<>();
         foods.add(favoriteFood);
-        Category category = new Category("myRecipe", foods);
         addFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

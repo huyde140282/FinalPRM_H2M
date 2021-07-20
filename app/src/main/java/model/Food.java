@@ -6,8 +6,8 @@ public class Food {
     private int calories, carb, fat;
     public  Food()
     {}
-    public Food(int resId, String foodName) {
-        this.resId = resId;
+    public Food(String foodName,String description) {
+        this.description=description;
         this.foodName = foodName;
     }
 

@@ -8,28 +8,30 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="280dp"
+        android:background="#F7DEE9"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:alpha="0.5"
             android:fitsSystemWindows="true"
-            app:title="Food1"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-            android:id="@+id/collapsing_toolbar">
+            app:title="Food1">
 
             <ImageView
                 android:id="@+id/img_slide"
                 android:layout_width="match_parent"
                 android:layout_height="280dp"
-                android:src="@drawable/img1"
-                android:scaleType="centerCrop"/>
-            
+                android:scaleType="centerCrop"
+                android:src="@drawable/img1" />
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -49,7 +51,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/nutrition"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp">
 
                 <TextView
                     android:id="@+id/Calories_infor"
