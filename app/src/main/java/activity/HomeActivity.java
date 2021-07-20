@@ -55,7 +55,7 @@ public class HomeActivity extends AppCompatActivity {
                             break;
                     case 1: bottomNavigationView.getMenu().findItem(R.id.my_recipe_tab).setChecked(true);
                         break;
-                    case 2: bottomNavigationView.getMenu().findItem(R.id.camera_tab).setChecked(true);
+                    case 2: bottomNavigationView.getMenu().findItem(R.id.search_tab).setChecked(true);
                         break;
                     case 3: bottomNavigationView.getMenu().findItem(R.id.profile_tab).setChecked(true);
                         break;
@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
                                              MyRecipeFragment myRecipeFragment = (MyRecipeFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 1);
                                              myRecipeFragment.reloadData();
                                              break;
-                    case R.id.camera_tab: mViewPager.setCurrentItem(2);
+                    case R.id.search_tab: mViewPager.setCurrentItem(2);
                         SearchFragment searchFragment = (SearchFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 2);
                                           break;
                     case R.id.profile_tab: mViewPager.setCurrentItem(3);

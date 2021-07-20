@@ -3,17 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragment.CameraFragment"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/recipe_search_view"
+<!--    <androidx.appcompat.widget.SearchView-->
+<!--        android:id="@+id/recipe_search_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="15dp"-->
+<!--        android:background="@drawable/search_view_background"-->
+<!--        app:iconifiedByDefault="false"-->
+<!--        app:queryHint="Lookup recipe..." />-->
+
+    <TextView
+        android:id="@+id/recipe_search_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_margin="15dp"
         android:background="@drawable/search_view_background"
+        android:fontFamily="@font/poppins_light"
+        android:gravity="center_vertical"
+        android:hint="Lookup recipe..."
+        android:paddingLeft="10sp"
+        android:textAllCaps="false"
+        android:textSize="16sp"
         app:iconifiedByDefault="false"
-        app:queryHint="Lookup recipe..."
-        android:layout_margin="15dp"/>
+        app:queryHint="Lookup recipe..." />
 <!--    <TextView-->
 <!--        android:id="@+id/search_results"-->
 <!--        android:text=""-->
@@ -23,7 +37,7 @@
 <!--        android:textAppearance="@android:style/TextAppearance.Material.Large"/>-->
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/contact_recycleView"
+        android:id="@+id/search_recycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
