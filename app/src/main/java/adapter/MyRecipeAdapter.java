@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.squareup.picasso.Picasso;
 
 import net.smallacademy.authenticatorapp.R;
@@ -29,6 +30,7 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
     public List<Food> getmFoods() {
         return mFoods;
     }
+
 
     public MyRecipeAdapter(Context context) {
         this.context = context;
