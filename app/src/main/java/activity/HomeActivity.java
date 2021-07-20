@@ -19,7 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import net.smallacademy.authenticatorapp.R;
 
 import adapter.HomeViewPagerAdapter;
-import fragment.CameraFragment;
+import fragment.SearchFragment;
 import fragment.HomeFragment;
 import fragment.MyRecipeFragment;
 import fragment.ProfileFragment;
@@ -80,7 +80,7 @@ public class HomeActivity extends AppCompatActivity {
                                              myRecipeFragment.reloadData();
                                              break;
                     case R.id.camera_tab: mViewPager.setCurrentItem(2);
-                                          CameraFragment cameraFragment = (CameraFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 2);
+                        SearchFragment searchFragment = (SearchFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 2);
                                           break;
                     case R.id.profile_tab: mViewPager.setCurrentItem(3);
                                            ProfileFragment profileFragment = (ProfileFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 3);
