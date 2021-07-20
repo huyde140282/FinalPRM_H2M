@@ -2,15 +2,12 @@ package fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,14 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import net.smallacademy.authenticatorapp.R;
 
@@ -40,7 +32,6 @@ import adapter.ItemTouchHelperListener;
 import adapter.MyRecipeAdapter;
 import adapter.RecycleViewItemTouchHelper;
 import model.Food;
-import model.User;
 
 public class MyRecipeFragment extends Fragment implements ItemTouchHelperListener {
     private RecyclerView rcvMyRecipe;
@@ -69,8 +60,6 @@ public class MyRecipeFragment extends Fragment implements ItemTouchHelperListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_my_recipe_list, container, false);
         fAuth = FirebaseAuth.getInstance();
@@ -78,7 +67,7 @@ public class MyRecipeFragment extends Fragment implements ItemTouchHelperListene
         user = fAuth.getCurrentUser();
         myRecipeView=mView.findViewById(R.id.my_recipe_view);
 
-        rcvMyRecipe = mView.findViewById(R.id.contact_recycleView);
+        rcvMyRecipe = mView.findViewById(R.id.my_recipe_recycleView);
         myRecipeAdapter = new MyRecipeAdapter(mView.getContext());
         foods = new ArrayList<>();
         loadFood(foods);
