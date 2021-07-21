@@ -87,17 +87,20 @@ public class ItemDetail extends AppCompatActivity {
         String carb = intent.getStringExtra("carb");
         String fat = intent.getStringExtra("fat");
 
-        txtCalo.setText(calo);
-        txtCarb.setText(carb);
-        txtFat.setText(fat);
+        txtCalo.setText(calo+"g");
+        txtCarb.setText(carb+"g");
+        txtFat.setText(fat+"g");
         if (!TextUtils.isEmpty(calo) && !TextUtils.isEmpty(carb) && !TextUtils.isEmpty(fat)) {
             calo1 = Integer.parseInt(calo);
             carb1 = Integer.parseInt(carb);
             fat1 = Integer.parseInt(fat);
         } else {
             calo1 = 1;
-            calo1 = 2;
+            carb1 = 2;
             fat1 = 3;
+            txtCalo.setText(calo1+"g");
+            txtCarb.setText(carb1+"g");
+            txtFat.setText(fat1+"g");
         }
         Food favoriteFood = new Food(1, foodName, instruction, ingredient, imgFood, calo1, carb1, fat1);
         List<Food> foods = new ArrayList<>();

@@ -5,12 +5,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -35,8 +39,9 @@ public class SearchFragment extends Fragment {
     FirebaseFirestore fStore;
     FirebaseUser user;
     List<Food> foods;
-    TextView searchText;
+    EditText searchText;
     String userID;
+    SearchView searchView;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static final String TAG = "TAG";
 
@@ -60,23 +65,45 @@ public class SearchFragment extends Fragment {
         fStore = FirebaseFirestore.getInstance();
         user = fAuth.getCurrentUser();
 
-        rcvSearchView = (RecyclerView) mView.findViewById(R.id.search_recycleView);
-        searchAdapter = new MyRecipeAdapter(mView.getContext());
-        searchText = mView.findViewById(R.id.recipe_search_text);
-
         foods = new ArrayList<>();
-        searchAdapter.setData(foods);
+        rcvSearchView = (RecyclerView) mView.findViewById(R.id.search_recycleView);
+        searchView=(SearchView)mView.findViewById(R.id.recipe_search_view);
+        searchAdapter = new MyRecipeAdapter(foods, mView.getContext());
         rcvSearchView.setAdapter(searchAdapter);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                List<Food> filterFoodList = filterFood(newText);
+                searchAdapter.filterFoodList((ArrayList<Food>) filterFoodList);
+                return false;
+            }
+        });
         EventChangeListener();
+        Log.d("FoodListAdapter",String.valueOf(searchAdapter.getmFoods().size()));
+        Log.d("FoodListAdapter",String.valueOf(searchAdapter.getmFoodFull().size()));
         // Inflate the layout for this fragment
         return mView;
     }
+    private List<Food> filterFood(String text) {
+        String lowerCaseQuery = text.toLowerCase();
+        List<Food> filteredFoodList = new ArrayList<>();
+        for (Food food : foods) {
+            String foodName = food.getFoodName().toLowerCase();
+            if (foodName.contains(lowerCaseQuery))
+                filteredFoodList.add(food);
+        }
+        return filteredFoodList;
+    }
+
 
     private void EventChangeListener() {
 
-        db.collection("foods").orderBy("foodName").startAt(searchText).endAt(searchText + "\uf8ff").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("foods").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -86,19 +113,32 @@ public class SearchFragment extends Fragment {
                 for (DocumentChange dc : value.getDocumentChanges()) {
                     if (dc.getType() == DocumentChange.Type.ADDED) {
                         foods.add(dc.getDocument().toObject(Food.class));
+                        Log.d("FoodList",String.valueOf(foods.size()));
                     }
                     searchAdapter.notifyDataSetChanged();
                 }
+
+
+
             }
         });
 
+
     }
+
 
 
     @Override
     public void onResume() {
         super.onResume();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+
 
 
     public void reloadData() {

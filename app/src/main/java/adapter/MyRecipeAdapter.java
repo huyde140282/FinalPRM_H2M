@@ -2,9 +2,12 @@ package adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -12,11 +15,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.squareup.picasso.Picasso;
 
 import net.smallacademy.authenticatorapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import activity.ItemDetail;
@@ -26,17 +29,21 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
 
     private List<Food> mFoods;
     private Context context;
-
+    private List<Food> mFoodFull;
     public List<Food> getmFoods() {
         return mFoods;
     }
 
+    public List<Food> getmFoodFull() {
+        return mFoodFull;
+    }
 
     public MyRecipeAdapter(Context context) {
         this.context = context;
     }
 
     public MyRecipeAdapter(List<Food> mFoods, Context context) {
+        this.mFoodFull=new ArrayList<>(mFoods);
         this.mFoods = mFoods;
         this.context = context;
     }
@@ -45,7 +52,10 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
         this.mFoods = list;
         notifyDataSetChanged();
     }
-
+    public void filterFoodList(ArrayList<Food> filteredList) {
+        mFoods = filteredList;
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public MyRecipeAdapter.FoodViewHoler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -93,6 +103,7 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
         }
         return 0;
     }
+
 
     public class FoodViewHoler extends RecyclerView.ViewHolder {
         private ImageView imgFood;
