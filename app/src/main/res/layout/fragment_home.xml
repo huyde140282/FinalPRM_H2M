@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgroundfinal"
+    android:background="@drawable/backgroundhome"
 
     tools:context="fragment.HomeFragment">
 
@@ -26,7 +26,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="-50dp"
             app:ci_drawable="@drawable/indicator_bg" />
-<!--        android:background="#8888"-->
+        <!--        android:background="#8888"-->
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

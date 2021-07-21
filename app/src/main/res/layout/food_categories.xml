@@ -9,11 +9,12 @@
         android:id="@+id/txt_cat_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="New for today"
-        android:textStyle="bold"
         android:layout_marginStart="10dp"
-        android:textColor="@color/text_color"/>
+        android:fontFamily="@font/poppins_medium"
+        android:text="New for today"
+        android:textColor="@color/text_color"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_food"
