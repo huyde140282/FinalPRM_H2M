@@ -109,7 +109,6 @@ public class ItemDetail extends AppCompatActivity {
                                 List<Map<String, Object>> foodFB = (List<Map<String, Object>>) document.get("foods");
                                 ArrayList<String> names = new ArrayList<>();
                                 for (Map<String, Object> group : foodFB) {
-//                            String name =  group.get("description").toString();
                                     int calories = Integer.parseInt(group.get("calories").toString());
                                     int carb = Integer.parseInt(group.get("carb").toString());
                                     String des = group.get("description").toString();
