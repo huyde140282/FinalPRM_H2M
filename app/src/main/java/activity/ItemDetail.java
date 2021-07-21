@@ -83,26 +83,26 @@ public class ItemDetail extends AppCompatActivity {
         txtIngredients.setText(ingredient);
 
         //Set food nutrition
-        String calo = intent.getStringExtra("calo");
-        String carb = intent.getStringExtra("carb");
-        String fat = intent.getStringExtra("fat");
+        int calo = intent.getIntExtra("calo",1);
+        int carb = intent.getIntExtra("carb",2);
+        int fat = intent.getIntExtra("fat",3);
 
         txtCalo.setText(calo+"g");
         txtCarb.setText(carb+"g");
         txtFat.setText(fat+"g");
-        if (!TextUtils.isEmpty(calo) && !TextUtils.isEmpty(carb) && !TextUtils.isEmpty(fat)) {
-            calo1 = Integer.parseInt(calo);
-            carb1 = Integer.parseInt(carb);
-            fat1 = Integer.parseInt(fat);
-        } else {
-            calo1 = 1;
-            carb1 = 2;
-            fat1 = 3;
-            txtCalo.setText(calo1+"g");
-            txtCarb.setText(carb1+"g");
-            txtFat.setText(fat1+"g");
-        }
-        Food favoriteFood = new Food(1, foodName, instruction, ingredient, imgFood, calo1, carb1, fat1);
+//        if (!TextUtils.isEmpty(calo) && !TextUtils.isEmpty(carb) && !TextUtils.isEmpty(fat)) {
+//            calo1 = Integer.parseInt(calo);
+//            carb1 = Integer.parseInt(carb);
+//            fat1 = Integer.parseInt(fat);
+//        } else {
+//            calo1 = 1;
+//            carb1 = 2;
+//            fat1 = 3;
+//            txtCalo.setText(calo1+"g");
+//            txtCarb.setText(carb1+"g");
+//            txtFat.setText(fat1+"g");
+//        }
+        Food favoriteFood = new Food(1, foodName, instruction, ingredient, imgFood, calo, carb, fat);
         List<Food> foods = new ArrayList<>();
         foods.add(favoriteFood);
         addFood.setOnClickListener(new View.OnClickListener() {

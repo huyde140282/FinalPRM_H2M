@@ -105,8 +105,6 @@ public class MyRecipeFragment extends Fragment implements ItemTouchHelperListene
 
                         myRecipeAdapter.setData(foods);
                         rcvMyRecipe.setAdapter(myRecipeAdapter);
-
-
                     }
                 }
             }
