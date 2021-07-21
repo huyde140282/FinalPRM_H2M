@@ -44,7 +44,7 @@ public class ItemDetail extends AppCompatActivity {
     int calo1;
     int carb1;
     int fat1;
-
+    List<Food> foods;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +80,7 @@ public class ItemDetail extends AppCompatActivity {
 
         //Set food ingredients
         String ingredient = intent.getStringExtra("ingredients");
-        txtIngredients.setText(ingredient);
+        txtIngredients.setText(ingredient.replaceAll("     ","\n"));
 
         //Set food nutrition
         int calo = intent.getIntExtra("calo",1);
@@ -90,21 +90,11 @@ public class ItemDetail extends AppCompatActivity {
         txtCalo.setText(calo+"g");
         txtCarb.setText(carb+"g");
         txtFat.setText(fat+"g");
-//        if (!TextUtils.isEmpty(calo) && !TextUtils.isEmpty(carb) && !TextUtils.isEmpty(fat)) {
-//            calo1 = Integer.parseInt(calo);
-//            carb1 = Integer.parseInt(carb);
-//            fat1 = Integer.parseInt(fat);
-//        } else {
-//            calo1 = 1;
-//            carb1 = 2;
-//            fat1 = 3;
-//            txtCalo.setText(calo1+"g");
-//            txtCarb.setText(carb1+"g");
-//            txtFat.setText(fat1+"g");
-//        }
+
         Food favoriteFood = new Food(1, foodName, instruction, ingredient, imgFood, calo, carb, fat);
-        List<Food> foods = new ArrayList<>();
-        foods.add(favoriteFood);
+        foods = new ArrayList<>();
+//        foods.add(favoriteFood);
+
         addFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

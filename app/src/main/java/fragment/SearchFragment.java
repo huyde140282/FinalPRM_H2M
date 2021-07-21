@@ -6,15 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -67,7 +64,7 @@ public class SearchFragment extends Fragment {
 
         foods = new ArrayList<>();
         rcvSearchView = (RecyclerView) mView.findViewById(R.id.search_recycleView);
-        searchView=(SearchView)mView.findViewById(R.id.recipe_search_view);
+        searchView = (SearchView) mView.findViewById(R.id.recipe_search_view);
         searchAdapter = new MyRecipeAdapter(foods, mView.getContext());
         rcvSearchView.setAdapter(searchAdapter);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -84,11 +81,12 @@ public class SearchFragment extends Fragment {
             }
         });
         EventChangeListener();
-        Log.d("FoodListAdapter",String.valueOf(searchAdapter.getmFoods().size()));
-        Log.d("FoodListAdapter",String.valueOf(searchAdapter.getmFoodFull().size()));
+        Log.d("FoodListAdapter", String.valueOf(searchAdapter.getmFoods().size()));
+        Log.d("FoodListAdapter", String.valueOf(searchAdapter.getmFoodFull().size()));
         // Inflate the layout for this fragment
         return mView;
     }
+
     private List<Food> filterFood(String text) {
         String lowerCaseQuery = text.toLowerCase();
         List<Food> filteredFoodList = new ArrayList<>();
@@ -113,19 +111,16 @@ public class SearchFragment extends Fragment {
                 for (DocumentChange dc : value.getDocumentChanges()) {
                     if (dc.getType() == DocumentChange.Type.ADDED) {
                         foods.add(dc.getDocument().toObject(Food.class));
-                        Log.d("FoodList",String.valueOf(foods.size()));
+                        Log.d("FoodList", String.valueOf(foods.size()));
                     }
                     searchAdapter.notifyDataSetChanged();
                 }
-
-
 
             }
         });
 
 
     }
-
 
 
     @Override
@@ -137,8 +132,6 @@ public class SearchFragment extends Fragment {
     public void onPause() {
         super.onPause();
     }
-
-
 
 
     public void reloadData() {

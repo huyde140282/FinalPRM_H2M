@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
 
         categoryAdapter.setData(listCategory);
         rcvCategory.setAdapter(categoryAdapter);
-//        loadfoodtoDB();
+
         EventChangeListener();
         //Load Image
         autoSlideImage();
@@ -145,13 +145,14 @@ public class HomeFragment extends Fragment {
                     }
                     categoryAdapter.notifyDataSetChanged();
                 }
-                Category category1 = new Category("Category 1", listFood);
-                Category category2 = new Category("Category 2", listFood);
-                listCategory.add(category1);
-                listCategory.add(category2);
+
 
             }
         });
+        Category category1 = new Category("Category 1", listFood);
+        Category category2 = new Category("Category 2", listFood);
+        listCategory.add(category1);
+        listCategory.add(category2);
     }
 
     private List<HomeSlidePhoto> getListHomePhoto() {
