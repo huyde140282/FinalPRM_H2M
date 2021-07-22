@@ -1,6 +1,9 @@
 package activity;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +28,8 @@ import net.smallacademy.authenticatorapp.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import model.Food;
 
@@ -33,8 +38,11 @@ public class ItemDetail extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private TextView txtInstruction, txtIngredients, txtCalo, txtCarb, txtFat;
     private ImageView imgView;
-    private Button addFood;
+    private Button addFood, cancelAdd, btnConfirm;
     private String userID;
+    private Dialog dialog;
+    private ProgressDialog progressDialog;
+    private Timer timer, timer2;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
 
@@ -55,6 +63,17 @@ public class ItemDetail extends AppCompatActivity {
         txtFat = findViewById(R.id.Fat_infor);
         imgView = findViewById(R.id.img_slide);
         addFood = findViewById(R.id.add_btn);
+
+        dialog = new Dialog(this);
+        progressDialog = new ProgressDialog(ItemDetail.this);
+        dialog.setContentView(R.layout.add_confirm_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        dialog.setCanceledOnTouchOutside(true);
+
+
+        btnConfirm = dialog.findViewById(R.id.btn_add_confirm);
+        cancelAdd = dialog.findViewById(R.id.btn_add_cancel);
+
         //Set food image
         String imgFood = intent.getStringExtra("img");
         Picasso.get()
@@ -93,68 +112,70 @@ public class ItemDetail extends AppCompatActivity {
         addFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userID = fAuth.getCurrentUser().getUid();
-                DocumentReference documentReference = fStore.collection("users").document(userID);
-                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                dialog.show();
+
+                //Cancel add
+                cancelAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                List<Map<String, Object>> foodFB = (List<Map<String, Object>>) document.get("foods");
-                                ArrayList<Food> foods = new ArrayList<>();
-                                for (Map<String, Object> group : foodFB) {
-                                    int calories = Integer.parseInt(group.get("calories").toString());
-                                    int carb = Integer.parseInt(group.get("carb").toString());
-                                    String des = group.get("description").toString();
-                                    int fat = Integer.parseInt(group.get("fat").toString());
-                                    String imagePath = (String) group.get("imagePath");
-                                    String ing = (String) group.get("ingredients");
-                                    int resId = Integer.parseInt(group.get("resId").toString());
-                                    String foodName = (String) group.get("foodName");
-                                    Food food = new Food(resId, foodName, des, ing, imagePath, calories, carb, fat);
-                                    foods.add(food);
-                                }
-                                foods.add(favoriteFood);
-                                documentReference.update("foods",foods);
-                            }
-                        }
-                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                    }
+                    public void onClick(View v) {
 
+                        dialog.dismiss();
+                    }
                 });
-            }
-        });
 
-    }
-    public boolean checkFoodList(List<Food> foods,Food favoriteFood)
-    {
-        userID = fAuth.getCurrentUser().getUid();
-        DocumentReference documentReference = fStore.collection("users").document(userID);
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        List<Map<String, Object>> foodFB = (List<Map<String, Object>>) document.get("foods");
-                        for (Map<String, Object> group : foodFB) {
-                            int calories = Integer.parseInt(group.get("calories").toString());
-                            int carb = Integer.parseInt(group.get("carb").toString());
-                            String des = group.get("description").toString();
-                            int fat = Integer.parseInt(group.get("fat").toString());
-                            String imagePath = (String) group.get("imagePath");
-                            String ing = (String) group.get("ingredients");
-                            int resId = Integer.parseInt(group.get("resId").toString());
-                            String foodName = (String) group.get("foodName");
-                            Food food = new Food(resId, foodName, des, ing, imagePath, calories, carb, fat);
-                            foods.add(food);
-                        }
+                //Confirm add
+                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
+                        userID = fAuth.getCurrentUser().getUid();
+                        DocumentReference documentReference = fStore.collection("users").document(userID);
+                        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        List<Map<String, Object>> foodFB = (List<Map<String, Object>>) document.get("foods");
+                                        ArrayList<String> names = new ArrayList<>();
+                                        for (Map<String, Object> group : foodFB) {
+                                            int calories = Integer.parseInt(group.get("calories").toString());
+                                            int carb = Integer.parseInt(group.get("carb").toString());
+                                            String des = group.get("description").toString();
+                                            int fat = Integer.parseInt(group.get("fat").toString());
+                                            String imagePath = (String) group.get("imagePath");
+                                            String ing = (String) group.get("ingredients");
+                                            int resId = Integer.parseInt(group.get("resId").toString());
+                                            String foodName = (String) group.get("foodName");
+                                            Food food = new Food(resId, foodName, des, ing, imagePath, calories, carb, fat);
+                                            foods.add(food);
+                                        }
+                                        foods.add(favoriteFood);
+                                        documentReference.update("foods",foods);
+                                    }
+                                }
+                                dialog.dismiss();
+                                dialog.setContentView(R.layout.add_successfull_dialog);
+                                dialog.show();
+//                                progressDialog.show();
+//                                progressDialog.setContentView(R.layout.progress_round_dialog);
+//                                progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                timer = new Timer();
+                                timer.schedule(new TimerTask() {
+                                    @Override
+                                    public void run() {
+//                                        dialog.setContentView(R.layout.add_successfull_dialog);
+//                                        dialog.show();
+                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                    }
+                                },3000);
+                            }
+                        });
                     }
-                }
+                });
+
             }
         });
-        return true;
+
     }
 }

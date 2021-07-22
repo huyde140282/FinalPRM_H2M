@@ -10,4 +10,6 @@
     <color name="text_color">#B3003D</color>
     <color name="start_wave_color">#FF00FF</color>
     <color name="end_wave_color">#FFC107</color>
+    <color name="primary_text">#000000</color>
+    <color name="btn_cancel">#736D6D</color>
 </resources>
