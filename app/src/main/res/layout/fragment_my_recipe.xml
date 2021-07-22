@@ -63,13 +63,38 @@
 
             <TextView
                 android:id="@+id/text_cardview_offline"
-                android:layout_width="91dp"
+                android:layout_width="154dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="7.5dp"
                 android:fontFamily="@font/poppins"
                 android:text="Name Food"
                 android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/txtCalo"
+                android:layout_width="14sp"
+                android:layout_height="24dp"
+                android:layout_marginTop="34sp"
+                android:layout_weight="1"
+                android:height="30sp"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/txtCarb"
+                android:layout_width="14sp"
+                android:layout_height="24dp"
+                android:layout_marginTop="34sp"
+                android:layout_weight="1"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/txtFat"
+                android:layout_width="14sp"
+                android:layout_height="24dp"
+                android:layout_marginTop="34sp"
+                android:layout_weight="1"
+                android:textColor="#000000" />
 
         </LinearLayout>
     </RelativeLayout>

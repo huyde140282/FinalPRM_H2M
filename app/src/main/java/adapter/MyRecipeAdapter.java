@@ -2,12 +2,9 @@ package adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +27,7 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
     private List<Food> mFoods;
     private Context context;
     private List<Food> mFoodFull;
+
     public List<Food> getmFoods() {
         return mFoods;
     }
@@ -43,7 +41,7 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
     }
 
     public MyRecipeAdapter(List<Food> mFoods, Context context) {
-        this.mFoodFull=new ArrayList<>(mFoods);
+        this.mFoodFull = new ArrayList<>(mFoods);
         this.mFoods = mFoods;
         this.context = context;
     }
@@ -52,10 +50,12 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
         this.mFoods = list;
         notifyDataSetChanged();
     }
+
     public void filterFoodList(ArrayList<Food> filteredList) {
         mFoods = filteredList;
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public MyRecipeAdapter.FoodViewHoler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -76,8 +76,10 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
                 .fit()
                 .centerCrop()
                 .into(holder.imgFood);
-        holder.txtFood.setText(food.getFoodName() + " Calo: " + food.getCalories() + " Fat: " + food.getFat() + " Carb:" + food.getCarb());
-
+        holder.txtFood.setText(food.getFoodName());
+//        holder.txtCarb.setText(food.getCarb()+"g");
+//        holder.txtFat.setText(food.getFat()+"g");
+//        holder.txtCalo.setText(food.getCalories()+"g");
         holder.imgFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +110,10 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
     public class FoodViewHoler extends RecyclerView.ViewHolder {
         private ImageView imgFood;
         private TextView txtFood;
+        private TextView txtCarb;
+        private TextView txtCalo;
+        private TextView txtFat;
+
         RelativeLayout layoutForeGround;
         RelativeLayout deleteBackGround;
         RelativeLayout rightBackGround;
@@ -120,6 +126,9 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.FoodVi
             layoutForeGround = itemView.findViewById(R.id.foreground);
             imgFood = itemView.findViewById(R.id.image_cardview_offline);
             txtFood = itemView.findViewById(R.id.text_cardview_offline);
+            txtCarb = itemView.findViewById(R.id.txtCarb);
+            txtCalo = itemView.findViewById(R.id.txtCalo);
+            txtFat = itemView.findViewById(R.id.txtFat);
         }
     }
 
