@@ -1,15 +1,13 @@
 package activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,7 +15,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.collection.LLRBNode;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import model.Category;
 import model.Food;
 
 public class ItemDetail extends AppCompatActivity {
@@ -41,9 +37,7 @@ public class ItemDetail extends AppCompatActivity {
     private String userID;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-    int calo1;
-    int carb1;
-    int fat1;
+
     List<Food> foods;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,15 +80,16 @@ public class ItemDetail extends AppCompatActivity {
         int calo = intent.getIntExtra("calo",1);
         int carb = intent.getIntExtra("carb",2);
         int fat = intent.getIntExtra("fat",3);
-
+        //Set food resId
+        int resId= intent.getIntExtra("resId",4);
         txtCalo.setText(calo+"g");
         txtCarb.setText(carb+"g");
         txtFat.setText(fat+"g");
 
-        Food favoriteFood = new Food(1, foodName, instruction, ingredient, imgFood, calo, carb, fat);
-        foods = new ArrayList<>();
-//        foods.add(favoriteFood);
 
+        foods = new ArrayList<>();
+
+        Food favoriteFood = new Food(resId, foodName, instruction, ingredient, imgFood, calo, carb, fat);
         addFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +102,7 @@ public class ItemDetail extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 List<Map<String, Object>> foodFB = (List<Map<String, Object>>) document.get("foods");
-                                ArrayList<String> names = new ArrayList<>();
+                                ArrayList<Food> foods = new ArrayList<>();
                                 for (Map<String, Object> group : foodFB) {
                                     int calories = Integer.parseInt(group.get("calories").toString());
                                     int carb = Integer.parseInt(group.get("carb").toString());
@@ -126,8 +121,40 @@ public class ItemDetail extends AppCompatActivity {
                         }
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                     }
+
                 });
             }
         });
+
+    }
+    public boolean checkFoodList(List<Food> foods,Food favoriteFood)
+    {
+        userID = fAuth.getCurrentUser().getUid();
+        DocumentReference documentReference = fStore.collection("users").document(userID);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        List<Map<String, Object>> foodFB = (List<Map<String, Object>>) document.get("foods");
+                        for (Map<String, Object> group : foodFB) {
+                            int calories = Integer.parseInt(group.get("calories").toString());
+                            int carb = Integer.parseInt(group.get("carb").toString());
+                            String des = group.get("description").toString();
+                            int fat = Integer.parseInt(group.get("fat").toString());
+                            String imagePath = (String) group.get("imagePath");
+                            String ing = (String) group.get("ingredients");
+                            int resId = Integer.parseInt(group.get("resId").toString());
+                            String foodName = (String) group.get("foodName");
+                            Food food = new Food(resId, foodName, des, ing, imagePath, calories, carb, fat);
+                            foods.add(food);
+                        }
+
+                    }
+                }
+            }
+        });
+        return true;
     }
 }

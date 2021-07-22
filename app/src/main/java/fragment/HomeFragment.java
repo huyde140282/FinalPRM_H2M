@@ -14,18 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.StorageReference;
 
 import net.smallacademy.authenticatorapp.R;
@@ -43,7 +38,7 @@ import model.Food;
 import model.HomeSlidePhoto;
 
 public class HomeFragment extends Fragment {
-    private final String TAG="TAG";
+    private final String TAG = "TAG";
     StorageReference storageReference;
     private RecyclerView rcvCategory;
     private CategoryAdapter categoryAdapter;
@@ -66,7 +61,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FirebaseFirestoreSettings settings=new FirebaseFirestoreSettings.Builder().setPersistenceEnabled(false).build();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder().setPersistenceEnabled(false).build();
         db.setFirestoreSettings(settings);
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_home, container, false);
@@ -105,34 +100,92 @@ public class HomeFragment extends Fragment {
     private void loadfoodtoDB() {
         List<Food> foods = new ArrayList<>();
         //add Food to database
-        foods.add(new Food("Melt-in-Your-Mouth Chuck Roast","abc"));
-        foods.add(new Food("Beef and Mushrooms with Smashed Potatoes","abc"));
-        foods.add(new Food("Best-Ever Fried Chicken","abc"));
-        foods.add(new Food("Cheesy Ham Chowder","abc"));
-        foods.add(new Food("Favorite Chicken Potpie","abc"));
-        foods.add(new Food("Honey Chipotle Ribs","abc"));
-        foods.add(new Food("Italian Spiral Meat Loaf","abc"));
-        foods.add(new Food("Potluck Macaroni and Cheese","abc"));
-        foods.add(new Food("Slow Cooker Beef Tips","abc"));
-        foods.add(new Food("Spaghetti Pie Casserole","abc"));
-        foods.add(new Food("Easy Seafood Salad","abc"));
-        foods.add(new Food("Watermelon and Blackberry Sangria","abc"));
-        foods.add(new Food("Rustic Tomato Pie","abc"));
-        foods.add(new Food("Caprese Salad","abc"));
-        foods.add(new Food("Sunday Roast Chicken","abc"));
-        foods.add(new Food("SM Creamy Ranchified Potatoes","abc"));
-        foods.add(new Food("SM Mom's Chopped Coleslaw","abc"));
-        foods.add(new Food("SM Slow-Cooker Potluck Beans","abc"));
-        foods.add(new Food("SM Slow Cooker Beef Tips","abc"));
-        for (Food item:foods) {
+        foods.add(new Food("Melt-in-Your-Mouth Chuck Roast", "abc"));
+        foods.add(new Food("Beef and Mushrooms with Smashed Potatoes", "abc"));
+        foods.add(new Food("Best-Ever Fried Chicken", "abc"));
+        foods.add(new Food("Cheesy Ham Chowder", "abc"));
+        foods.add(new Food("Favorite Chicken Potpie", "abc"));
+        foods.add(new Food("Honey Chipotle Ribs", "abc"));
+        foods.add(new Food("Italian Spiral Meat Loaf", "abc"));
+        foods.add(new Food("Potluck Macaroni and Cheese", "abc"));
+        foods.add(new Food("Slow Cooker Beef Tips", "abc"));
+        foods.add(new Food("Spaghetti Pie Casserole", "abc"));
+        foods.add(new Food("Easy Seafood Salad", "abc"));
+        foods.add(new Food("Watermelon and Blackberry Sangria", "abc"));
+        foods.add(new Food("Rustic Tomato Pie", "abc"));
+        foods.add(new Food("Caprese Salad", "abc"));
+        foods.add(new Food("Sunday Roast Chicken", "abc"));
+        foods.add(new Food("SM Creamy Ranchified Potatoes", "abc"));
+        foods.add(new Food("SM Mom's Chopped Coleslaw", "abc"));
+        foods.add(new Food("SM Slow-Cooker Potluck Beans", "abc"));
+        foods.add(new Food("SM Slow Cooker Beef Tips", "abc"));
+        for (Food item : foods) {
             db.collection("foods").add(item);
         }
     }
 
 
     private void EventChangeListener() {
+        List<Food> food1 = new ArrayList<>();
+        List<Food> food2 = new ArrayList<>();
+        List<Food> food3 = new ArrayList<>();
+        db.collection("foods").orderBy("resId").whereGreaterThan("resId", 4).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.e("FireStore error", error.getMessage());
+                    return;
+                }
+                for (DocumentChange dc : value.getDocumentChanges()) {
+                    if (dc.getType() == DocumentChange.Type.ADDED) {
+                        food1.add(dc.getDocument().toObject(Food.class));
+                    }
+                    categoryAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+        Category category1 = new Category("Most Popular Recipes", food1);
+        listCategory.add(category1);
+        db.collection("foods").orderBy("foodName").startAt("SM").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.e("FireStore error", error.getMessage());
+                    return;
+                }
+                for (DocumentChange dc : value.getDocumentChanges()) {
+                    if (dc.getType() == DocumentChange.Type.ADDED) {
+                        food2.add(dc.getDocument().toObject(Food.class));
+                    }
+                    categoryAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+        Category category2 = new Category("Get Ready For Summer", food2);
+        listCategory.add(category2);
+        db.collection("foods").whereEqualTo("resId",0).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.e("FireStore error", error.getMessage());
+                    return;
+                }
+                for (DocumentChange dc : value.getDocumentChanges()) {
+                    if (dc.getType() == DocumentChange.Type.ADDED) {
+                        food3.add(dc.getDocument().toObject(Food.class));
+                    }
+                    categoryAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+        Category category3 = new Category("Get Ready For Summer", food3);
+        listCategory.add(category3);
 
-        db.collection("foods").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    }
+
+    private void EventChangeListener1() {
+
+        db.collection("foods").orderBy("foodName").startAt("SM").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -145,14 +198,10 @@ public class HomeFragment extends Fragment {
                     }
                     categoryAdapter.notifyDataSetChanged();
                 }
-
-
             }
         });
-        Category category1 = new Category("Category 1", listFood);
-        Category category2 = new Category("Category 2", listFood);
+        Category category1 = new Category("Get Ready For Summer", listFood);
         listCategory.add(category1);
-        listCategory.add(category2);
     }
 
     private List<HomeSlidePhoto> getListHomePhoto() {

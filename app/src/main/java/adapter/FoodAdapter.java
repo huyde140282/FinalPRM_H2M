@@ -73,6 +73,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHoler>
                 intent.putExtra("carb", food.getCarb());
                 intent.putExtra("fat", food.getFat());
                 intent.putExtra("img", food.getImagePath());
+                intent.putExtra("resId",food.getResId());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }

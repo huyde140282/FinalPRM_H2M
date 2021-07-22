@@ -2,6 +2,7 @@ package fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +88,6 @@ public class MyRecipeFragment extends Fragment implements ItemTouchHelperListene
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         List<Map<String, Object>> foodFB = (List<Map<String, Object>>) document.get("foods");
-                        ArrayList<String> names = new ArrayList<>();
                         for (Map<String, Object> group : foodFB) {
                             int calories = Integer.parseInt(group.get("calories").toString());
                             int carb = Integer.parseInt(group.get("carb").toString());
@@ -99,6 +99,7 @@ public class MyRecipeFragment extends Fragment implements ItemTouchHelperListene
                             String foodName = (String) group.get("foodName");
                             Food food = new Food(resId, foodName, des, ing, imagePath, calories, carb, fat);
                             foods.add(food);
+//                            Log.d("OFFFF",String.valueOf(foods.size()));
                         }
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mView.getContext(), RecyclerView.VERTICAL, false);
                         rcvMyRecipe.setLayoutManager(linearLayoutManager);
