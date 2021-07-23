@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ForkJoinPool;
 
 import model.Food;
 
@@ -83,7 +84,7 @@ public class ItemDetail extends AppCompatActivity {
                 .into(imgView);
 
         //Set food name
-        String foodName = intent.getStringExtra("foodname");
+        String foodName = intent.getStringExtra("foodName");
         collapsingToolbarLayout.setTitle(foodName);
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.Widget_AppCompat_Light_ActionBar_Solid);
 
@@ -105,10 +106,10 @@ public class ItemDetail extends AppCompatActivity {
         txtCarb.setText(carb+"g");
         txtFat.setText(fat+"g");
 
-
         foods = new ArrayList<>();
 
         Food favoriteFood = new Food(resId, foodName, instruction, ingredient, imgFood, calo, carb, fat);
+        checkFoodExist(favoriteFood,addFood);
         addFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,15 +158,11 @@ public class ItemDetail extends AppCompatActivity {
                                 dialog.dismiss();
                                 dialog.setContentView(R.layout.add_successfull_dialog);
                                 dialog.show();
-//                                progressDialog.show();
-//                                progressDialog.setContentView(R.layout.progress_round_dialog);
-//                                progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                                 timer = new Timer();
                                 timer.schedule(new TimerTask() {
                                     @Override
                                     public void run() {
-//                                        dialog.setContentView(R.layout.add_successfull_dialog);
-//                                        dialog.show();
+
                                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                     }
                                 },3000);
@@ -178,4 +175,42 @@ public class ItemDetail extends AppCompatActivity {
         });
 
     }
+    public void checkFoodExist(Food favoriteFood, Button button)
+    {
+
+        userID = fAuth.getCurrentUser().getUid();
+        DocumentReference documentReference = fStore.collection("users").document(userID);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        List<Map<String, Object>> foodFB = (List<Map<String, Object>>) document.get("foods");
+                        ArrayList<Food> foods = new ArrayList<>();
+                        for (Map<String, Object> group : foodFB) {
+                            int calories = Integer.parseInt(group.get("calories").toString());
+                            int carb = Integer.parseInt(group.get("carb").toString());
+                            String des = group.get("description").toString();
+                            int fat = Integer.parseInt(group.get("fat").toString());
+                            String imagePath = (String) group.get("imagePath");
+                            String ing = (String) group.get("ingredients");
+                            int resId = Integer.parseInt(group.get("resId").toString());
+                            String foodName = (String) group.get("foodName");
+                            Food food = new Food(resId, foodName, des, ing, imagePath, calories, carb, fat);
+                            foods.add(food);
+                        }
+                        Log.d("Food",String.valueOf(foods.size()));
+                        for (Food item: foods) {
+                            if(favoriteFood.getFoodName().equalsIgnoreCase(item.getFoodName()))
+                            {
+                                button.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
 }
