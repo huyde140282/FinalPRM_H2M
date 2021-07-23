@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -61,7 +62,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHoler>
                 .centerCrop()
                 .into(holder.imgFood);
         holder.txtFood.setText(food.getFoodName());
-
+        holder.ratingBar.setRating(food.getResId());
         holder.imgFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,12 +93,13 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHoler>
     public class FoodViewHoler extends RecyclerView.ViewHolder{
         private ImageView imgFood;
         private TextView txtFood;
-
+        private RatingBar ratingBar;
         public FoodViewHoler(@NonNull View itemView) {
             super(itemView);
 
             imgFood = itemView.findViewById(R.id.img_food_rep);
             txtFood = itemView.findViewById(R.id.txt_foodname);
+            ratingBar = itemView.findViewById(R.id.rating_bar_control);
         }
     }
 }
