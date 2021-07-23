@@ -12,4 +12,7 @@
     <color name="end_wave_color">#FFC107</color>
     <color name="primary_text">#000000</color>
     <color name="btn_cancel">#736D6D</color>
+    <color name="calo">#A80F04</color>
+    <color name="carb">#0925AF</color>
+    <color name="fat">#FFD503</color>
 </resources>

@@ -63,6 +63,9 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHoler>
                 .into(holder.imgFood);
         holder.txtFood.setText(food.getFoodName());
         holder.ratingBar.setRating(food.getResId());
+        holder.txt_calo.setText(food.getCalories() + "g");
+        holder.txt_carb.setText(food.getCarb() + "g");
+        holder.txt_fat.setText(food.getFat() + "g");
         holder.imgFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,13 +95,16 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHoler>
 
     public class FoodViewHoler extends RecyclerView.ViewHolder{
         private ImageView imgFood;
-        private TextView txtFood;
+        private TextView txtFood, txt_calo, txt_carb, txt_fat;
         private RatingBar ratingBar;
         public FoodViewHoler(@NonNull View itemView) {
             super(itemView);
 
             imgFood = itemView.findViewById(R.id.img_food_rep);
             txtFood = itemView.findViewById(R.id.txt_foodname);
+            txt_calo = itemView.findViewById(R.id.txt_calo_home);
+            txt_carb = itemView.findViewById(R.id.txt_carb_home);
+            txt_fat = itemView.findViewById(R.id.txt_fat_home);
             ratingBar = itemView.findViewById(R.id.rating_bar_control);
         }
     }

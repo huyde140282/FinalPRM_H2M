@@ -8,10 +8,7 @@
     app:cardElevation="6dp"
     android:layout_marginStart="10dp"
     android:layout_marginTop="5dp">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ></TextView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -32,19 +29,23 @@
 
             <TextView
                 android:id="@+id/txt_foodname"
-                android:layout_width="189dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
                 android:paddingLeft="6dp"
                 android:text="Cheese-Quesadillas"
                 android:textColor="#000000"
-                android:textSize="14sp" />
+                android:textSize="12.5sp" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/txt_foodname"
+                android:orientation="horizontal">
             <RatingBar
                 android:id="@+id/rating_bar_control"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_below="@+id/txt_foodname"
                 android:layout_marginStart="-78dp"
                 android:layout_marginTop="-15dp"
                 android:numStars="5"
@@ -54,6 +55,32 @@
                 android:stepSize="1"
                 android:textAlignment="textStart" />
 
+
+                <TextView
+                    android:id="@+id/txt_calo_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20g"
+                    android:layout_marginLeft="-30dp"
+                    android:textColor="@color/calo"/>
+
+                <TextView
+                    android:id="@+id/txt_carb_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30g"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/carb"/>
+
+                <TextView
+                    android:id="@+id/txt_fat_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="40g"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/fat"/>
+
+            </LinearLayout>
         </RelativeLayout>
 
 
