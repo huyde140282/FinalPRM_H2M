@@ -14,12 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.StorageReference;
 
@@ -129,6 +133,7 @@ public class HomeFragment extends Fragment {
         List<Food> food1 = new ArrayList<>();
         List<Food> food2 = new ArrayList<>();
         List<Food> food3 = new ArrayList<>();
+        List<Food> food4 = new ArrayList<>();
         db.collection("foods").orderBy("resId").whereGreaterThan("resId", 4).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -180,6 +185,23 @@ public class HomeFragment extends Fragment {
         });
         Category category3 = new Category("Newest Recipes", food3);
         listCategory.add(category3);
+        Task task1=db.collection("foods").whereGreaterThan("calories",500).get();
+        Task task2=db.collection("foods").whereGreaterThan("fat",14)
+                .whereLessThan("fat",21).get();
+        Task<List<QuerySnapshot>> allTask= Tasks.whenAllSuccess(task1,task2);
+        allTask.addOnSuccessListener( new OnSuccessListener<List<QuerySnapshot>>() {
+            @Override
+            public void onSuccess(List<QuerySnapshot> objects) {
+                   for(QuerySnapshot queryDocumentSnapshots: objects)
+                       for(QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots)
+                       {
+                           food4.add(documentSnapshot.toObject(Food.class));
+                       }
+                categoryAdapter.notifyDataSetChanged();
+            }
+        });
+        Category category4 = new Category("Fitness Recipes", food4);
+        listCategory.add(category4);
 
     }
 

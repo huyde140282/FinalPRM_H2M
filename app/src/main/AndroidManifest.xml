@@ -12,9 +12,9 @@
         android:theme="@style/AppTheme">
         <activity android:name="activity.EditProfile"/>
         <activity android:name="activity.ItemDetail"/>
-        <activity android:name="activity.Login" />
+        <activity android:name="activity.Register" />
         <activity android:name="activity.HomeActivity" />
-        <activity android:name="activity.Register">
+        <activity android:name="activity.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

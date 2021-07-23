@@ -41,44 +41,49 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/txt_foodname"
+                android:layout_marginTop="-2dp"
                 android:orientation="horizontal">
-            <RatingBar
-                android:id="@+id/rating_bar_control"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginStart="-78dp"
-                android:layout_marginTop="-15dp"
-                android:numStars="5"
-                android:rating="3.5"
-                android:scaleX="0.3"
-                android:scaleY="0.3"
-                android:stepSize="1"
-                android:textAlignment="textStart" />
+
+                <RatingBar
+                    android:id="@+id/rating_bar_control"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="-78dp"
+                    android:layout_marginTop="-15dp"
+                    android:numStars="5"
+                    android:rating="3.5"
+                    android:scaleX="0.3"
+                    android:scaleY="0.3"
+                    android:stepSize="1"
+                    android:textAlignment="textStart" />
 
 
                 <TextView
                     android:id="@+id/txt_calo_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="-13dp"
                     android:text="20g"
-                    android:layout_marginLeft="-30dp"
-                    android:textColor="@color/calo"/>
+                    android:textColor="@color/calo"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/txt_carb_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:text="30g"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/carb"/>
+                    android:textColor="@color/carb"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/txt_fat_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:text="40g"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/fat"/>
+                    android:textColor="@color/end_wave_color"
+                    android:textSize="12sp" />
 
             </LinearLayout>
         </RelativeLayout>
