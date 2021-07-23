@@ -178,7 +178,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-        Category category3 = new Category("Get Ready For Summer", food3);
+        Category category3 = new Category("Newest Recipes", food3);
         listCategory.add(category3);
 
     }
